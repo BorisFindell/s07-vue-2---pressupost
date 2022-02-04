@@ -8,6 +8,14 @@
               <input class="casillas" type="checkbox" :value="index" v-model="checked"/>
               {{ opcion.txt }}: ({{ opcion.preu }}) €
             </label>
+            <Panell
+              v-if="index === 0 && checked.includes(0)"
+              @onchangepages="updatePages"
+              @onchangelanguages="updateLanguages"
+              :service-index="index"
+              :pages="pages"
+              :languages="languages"
+            />
           </div>
           <div>
             <h3 class="total">Total: {{ getTotal() }}</h3>
@@ -19,8 +27,14 @@
 
 <script>
 
+import Panell from "../components/Panell.vue";
+
+
 export default {
   name: "Home",
+  components: {
+    Panell
+  },
 
   data() {
     return {
@@ -29,7 +43,9 @@ export default {
         { txt: "Una consultoría SEO", preu: 300 },
         { txt: "Una campaña de Google Ads", preu: 100 },
       ],
-      checked: []
+      checked: [],
+      pages: 1,
+      languages: 1,
     };
   },
   
@@ -39,7 +55,16 @@ export default {
       this.checked.forEach((opcionIndex) => {
         total += this.opciones[opcionIndex].preu;
       });
+      if (this.checked.includes(0)) {
+        return (total += this.pages * this.languages * 30);
+      }
       return total;
+    },
+    updatePages(value) {
+      this.pages = value;
+    },
+    updateLanguages(value) {
+      this.languages = value;
     },
   },
 };
