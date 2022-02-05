@@ -1,7 +1,18 @@
 <template>
-  <div class="container d-flex justify-content-center">
+  <div class="container d-flex justify-content-center mt-4 ">
+    <router-link to="/" class="btn btn-primary btn-volver">
+      <h6>Volver</h6>
+    </router-link>
     <form id="form" @submit.prevent>
       <div class="formCont">
+        <label>
+          Presupuesto:
+          <input type="text" v-model="presupesto" />
+        </label>
+        <label>
+          Cliente:
+          <input type="text" v-model="client" />
+        </label>
         <h2>¿Qué quieres hacer?</h2>
           <div v-for="(opcion, index) in opciones" :key="index">
             <label class="opciones">
@@ -20,20 +31,28 @@
           <div>
             <h3 class="total">Total: {{ getTotal() }}</h3>
           </div>
+          <input class="saveButton btn-success" type="submit" value="Guardar" @click="saveList"/>
         </div>
+        
       </form>
+
+      <PressupostList 
+        v-if="presList.length > 0" 
+        :budgetList="presList" 
+        @onClickDelete="updateList"
+      />
   </div>
 </template>
 
 <script>
 
 import Panell from "../components/Panell.vue";
-
+import PressupostList from "../components/PressupostList.vue";
 
 export default {
   name: "Home",
   components: {
-    Panell
+    Panell, PressupostList
   },
 
   data() {
@@ -46,6 +65,9 @@ export default {
       checked: [],
       pages: 1,
       languages: 1,
+      client:"",
+      presupesto:"",
+      presList:[],
     };
   },
   
@@ -66,8 +88,29 @@ export default {
     updateLanguages(value) {
       this.languages = value;
     },
+    saveList(){
+      this.presList.push({
+        name: this.presupesto,
+        client: this.client,
+        cost: this.getTotal()
+      });
+      this.client = "";
+      this.presupesto = "";
+      this.pages = 1;
+      this.languages=1;
+      this.checked=[];
+      
+    },
+    updateList(budget){
+      const newList = this.presList.filter( b =>
+        budget !== b
+      )
+      this.presList = newList
+    },
   },
 };
+
+
 
 
 </script>
@@ -91,8 +134,19 @@ export default {
     border: 1px solid black;
     width: max-content;
     padding: 20px;
+    margin-top: 25%;
   }
+  .btn-volver {
+    height: 30px;
+    align-content: center;
+    text-align: center;
+    margin-right: 20px;
+  }
+
+.saveButton {
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 10px;
+}
+  
 </style>
-
-
-

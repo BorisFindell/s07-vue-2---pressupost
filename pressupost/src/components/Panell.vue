@@ -4,11 +4,15 @@
             labelText="Nº de páginas"
             :value="pages"
             @onchange="$emit('onchangepages', $event)"
+            modalId="paginas"
+            modalText="Aquí has de escoger el número de PÁGINAS que tendrá tu web"
         />
         <NumericInput 
             labelText="Nº de Idiomas"  
             :value="languages" 
             @onchange="$emit('onchangelanguages', $event)" 
+            modalId="idiomas"
+            modalText="Aquí has de escoger el número de IDIOMAS que tendrá tu web"
         />
       
     </div>
