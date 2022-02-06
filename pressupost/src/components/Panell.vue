@@ -3,14 +3,14 @@
         <NumericInput
             labelText="Nº de páginas"
             :value="pages"
-            @onchange="$emit('onchangepages', $event)"
+            @onchange="$emit('onchangepag', $event)"
             modalId="paginas"
             modalText="Aquí has de escoger el número de PÁGINAS que tendrá tu web"
         />
         <NumericInput 
             labelText="Nº de Idiomas"  
             :value="languages" 
-            @onchange="$emit('onchangelanguages', $event)" 
+            @onchange="$emit('onchangelang', $event)" 
             modalId="idiomas"
             modalText="Aquí has de escoger el número de IDIOMAS que tendrá tu web"
         />
@@ -31,9 +31,13 @@ export default {
 }
 </script>
 <style scoped>
+
 .panel {
     padding:15px;
+    margin-bottom: 5%;
     border: 1px solid black;
-    border-color:thistle;
+    max-width: fit-content;
+    margin-right: auto;
+    margin-left: auto;
 }
 </style>

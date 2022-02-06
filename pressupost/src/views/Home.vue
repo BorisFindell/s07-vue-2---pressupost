@@ -5,15 +5,18 @@
     </router-link>
     <form id="form" @submit.prevent>
       <div class="formCont">
-        <label>
+        <label class="m-2">
           Presupuesto:
-          <input type="text" v-model="presupesto" />
+          <b-form-input type="text" v-model="presupesto" ></b-form-input>
         </label>
-        <label>
+        <label class="m-2">
           Cliente:
-          <input type="text" v-model="client" />
+          <b-form-input type="text" v-model="client" ></b-form-input>
         </label>
-        <h2>¿Qué quieres hacer?</h2>
+        <h3 class="titulo">¿Qué quieres hacer?</h3>
+
+        <hr>
+
           <div v-for="(opcion, index) in opciones" :key="index">
             <label class="opciones">
               <input class="casillas" type="checkbox" :value="index" v-model="checked"/>
@@ -21,14 +24,15 @@
             </label>
             <Panell
               v-if="index === 0 && checked.includes(0)"
-              @onchangepages="updatePages"
-              @onchangelanguages="updateLanguages"
+              @onchangepag="updatePag"
+              @onchangelang="updateLang"
               :service-index="index"
               :pages="pages"
               :languages="languages"
             />
           </div>
           <div>
+            <hr>
             <h3 class="total">Total: {{ getTotal() }}</h3>
           </div>
           <input class="saveButton btn-success" type="submit" value="Guardar" @click="saveList"/>
@@ -38,7 +42,7 @@
 
       <PressupostList 
         v-if="presList.length > 0" 
-        :budgetList="presList" 
+        :presupostArr="presList" 
         @onClickDelete="updateList"
       />
   </div>
@@ -82,17 +86,17 @@ export default {
       }
       return total;
     },
-    updatePages(value) {
+    updatePag(value) {
       this.pages = value;
     },
-    updateLanguages(value) {
+    updateLang(value) {
       this.languages = value;
     },
     saveList(){
       this.presList.push({
         name: this.presupesto,
         client: this.client,
-        cost: this.getTotal()
+        costo: this.getTotal()
       });
       this.client = "";
       this.presupesto = "";
@@ -101,9 +105,9 @@ export default {
       this.checked=[];
       
     },
-    updateList(budget){
+    updateList(presu){
       const newList = this.presList.filter( b =>
-        budget !== b
+        presu !== b
       )
       this.presList = newList
     },
@@ -133,8 +137,7 @@ export default {
   .formCont {
     border: 1px solid black;
     width: max-content;
-    padding: 20px;
-    margin-top: 25%;
+    padding: 30px;
   }
   .btn-volver {
     height: 30px;
@@ -142,11 +145,14 @@ export default {
     text-align: center;
     margin-right: 20px;
   }
-
+.titulo {
+  margin-top: 10%;
+}
 .saveButton {
   font-size: 1rem;
   cursor: pointer;
   border-radius: 10px;
 }
+
   
 </style>
