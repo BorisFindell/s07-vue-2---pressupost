@@ -26,7 +26,6 @@
               v-if="index === 0 && checked.includes(0)"
               @onchangepag="updatePag"
               @onchangelang="updateLang"
-              :service-index="index"
               :pages="pages"
               :languages="languages"
             />
@@ -43,7 +42,7 @@
       <PressupostList 
         v-if="presList.length > 0" 
         :presupostArr="presList" 
-        @onClickDelete="updateList"
+        @delete="updateList"
       />
   </div>
 </template>
@@ -106,8 +105,8 @@ export default {
       
     },
     updateList(presu){
-      const newList = this.presList.filter( b =>
-        presu !== b
+      const newList = this.presList.filter( x =>
+        presu !== x
       )
       this.presList = newList
     },

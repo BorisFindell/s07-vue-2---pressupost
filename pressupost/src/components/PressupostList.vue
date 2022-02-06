@@ -10,12 +10,14 @@
                 <b-button class="btn btn-success btn-orden" @click="orderBy=null, searchText=''">Reiniciar</b-button>
         </div>
         <div :key="index" v-for="(presu, index) in computedList">
+            <hr>
             <ul class="listElem">
-                <li>Nombre del presupuesto:{{presu.name}}</li>
-                <li>Cliente:{{presu.client}}</li>
-                <li>Costo:{{presu.costo}}</li>
+                <li>Nombre del presupuesto: {{presu.name}}</li>
+                <li>Cliente: {{presu.client}}</li>
+                <li>Costo: {{presu.costo}}</li>
             </ul>
-            <b-button pill variant="danger" @click="$emit('onClickDelete', presu)">Eliminar</b-button>
+            <hr>
+            <b-button pill variant="danger" @click="$emit('delete', presu)">Eliminar</b-button>
         </div>
     </div>
 </template>
@@ -33,14 +35,14 @@ export default {
   },
   computed:{
     computedList: function(){
-      const presupostArrCopy = this.presupostArr.slice();
+      const presupostArrOrd = this.presupostArr.slice();
       if(this.orderBy==="orderByPreu"){
-        presupostArrCopy.sort((a,b)=>(a.costo > b.costo) ? 1:-1)
+        presupostArrOrd.sort((a,b)=>(a.costo > b.costo) ? 1:-1)
       } else if(this.orderBy==="orderByAlph"){
-        presupostArrCopy.sort((a,b)=>(a.name > b.name)? 1: -1)
+        presupostArrOrd.sort((a,b)=>(a.name > b.name)? 1: -1)
       }
-      return presupostArrCopy.filter((presu) =>
-        presu.name.toLowerCase().includes(this.searchText.toLowerCase())
+      return presupostArrOrd.filter(presu => presu.name.toLowerCase().includes(this.searchText.toLowerCase())
+      || presu.client.toLowerCase().includes(this.searchText.toLowerCase())
       )
     }
   }
@@ -52,7 +54,7 @@ export default {
     display:flex;
     flex-direction:column;
     align-items:center;
-    background-color: whitesmoke;
+    background-color: rgb(242, 243, 205);
     padding:10px;
     border-radius:10px;
 }
@@ -60,7 +62,7 @@ export default {
 .listElem{
     display:flex;
     flex-direction: column;
-    padding-top:20px;
+    align-items: flex-start;
     list-style-type: none
 }
 
